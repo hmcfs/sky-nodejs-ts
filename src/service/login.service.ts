@@ -4,7 +4,7 @@ import { generateToken } from '../utils/jwt';
 import redisCli from '../db/redis';
 import { CACHE_KEY_TOKEN } from '../constants/index';
 import { verifyPassword } from '../utils/bcript';
-import { verify } from 'node:crypto';
+
 type LoginFormData = {
   username: string;
   password: string;
@@ -19,7 +19,7 @@ export const loginSev = async (data: LoginFormData) => {
 
   const [result] = await pool.query<LoginRes[]>(sql, [data.username]);
   const isMatch = await verifyPassword(data.password, result[0].password);
-  if (result.length > 0 && isMatch) {
+  if (result.length > 0 && isMatch && result[0].status === 1) {
     const token = await generateToken(result[0].id);
     return {
       id: result[0].id,
