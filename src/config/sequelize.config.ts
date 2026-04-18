@@ -13,6 +13,7 @@ const dbConfig: Options = {
   define: {
     timestamps: false,
     freezeTableName: true,
+    underscored: true,
   },
 };
 
