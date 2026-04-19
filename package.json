@@ -4,10 +4,12 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "ts-node src/index.ts",
+    "nodemon": "nodemon src/index.ts",
     "format": "prettier --write .",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test:bcrypt": "ts-node src/test/bcrypt.test.ts"
+    "test:bcrypt": "ts-node src/test/bcrypt.test.ts",
+    "kill": "taskkill /F /IM node.exe"
   },
   "author": "",
   "license": "ISC",
