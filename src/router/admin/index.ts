@@ -7,5 +7,5 @@ const adminRouter = Router();
 adminRouter.use(loginRouter);
 adminRouter.use(employeeRouter);
 adminRouter.use('/category', categoryRouter);
-adminRouter.use('/meal', mealRouter);
+adminRouter.use('/setmeal', mealRouter);
 export default adminRouter;

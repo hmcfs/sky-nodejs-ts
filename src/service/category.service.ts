@@ -102,3 +102,4 @@ export const deleteSev = async (id: number) => {
   id = Number(id);
   return await CategoryModel.destroy({ where: { id } });
 };
+//查询分类的套餐

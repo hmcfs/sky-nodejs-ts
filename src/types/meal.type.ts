@@ -12,3 +12,10 @@ export interface Meal {
   updateUser: number;
 }
 export interface MealCreate extends Omit<Meal, 'id' | 'createTime' | 'updateTime'> {}
+export interface MealPage {
+  page: number;
+  pageSize: number;
+  status?: number;
+  name?: string;
+  categoryId?: number;
+}
