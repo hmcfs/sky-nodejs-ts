@@ -39,3 +39,8 @@ export const verifyToken = async (token: string) => {
     return null;
   }
 };
+
+export function getUserId(token: string) {
+  const decode = jwt.verify(token, JWT_SECRET) as DecodedToken;
+  return decode.userId || null;
+}

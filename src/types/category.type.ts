@@ -39,3 +39,12 @@ export interface QueryResult2 extends QueryResult {
   createUser?: number;
   updateUser?: number;
 }
+export interface UpdateParams {
+  id: number;
+  name?: string;
+  sort?: number;
+  status?: number;
+  type?: number;
+  update_user?: number;
+  create_user?: number;
+}
