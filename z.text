@@ -1,0 +1,2 @@
+netstat -ano | findstr ":8080" | ForEach-Object { $_.Split(' ',[System.StringSplitOptions]::RemoveEmptyEntries)[-1] } | ForEach-Object { taskkill /F /PID $_ }
+
