@@ -1,0 +1,24 @@
+# 环境变量密钥文件（重中之重！永远屏蔽）
+.env
+.env.local
+.env.development
+.env.production
+
+# node依赖
+node_modules/
+
+# IDEA/WebStorm 所有本地配置（你截图里所有xml全部屏蔽）
+.idea/
+*.iml
+*.xml
+.DS_Store
+
+# 日志、缓存
+logs/
+*.log
+dist/
+build/
+
+# 临时文件
+tmp/
+temp/
