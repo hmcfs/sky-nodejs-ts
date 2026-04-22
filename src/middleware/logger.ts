@@ -1,7 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import redisClient from '../db/redis'; // 你的 redis 实例
-
 import { CACHE_KEY_LOG } from '../constants/index';
+import dateFormat from '../utils/dateFormat';
+
 export const loggerMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (req.path.startsWith('/admin') || req.path.startsWith('/user)')) {
@@ -30,7 +31,9 @@ export const loggerMiddleware = async (req: Request, res: Response, next: NextFu
 
       // 5. ZSet：接口访问排行榜
       await redisClient.ZINCRBY('demo2:logs:api:rank', 1, req.path);
-      console.log(`[日志已存入Redis] ${req.method} ${req.originalUrl}`);
+      console.log(
+        `[日志已存入Redis] ${req.method} ${req.originalUrl}` + '    time: ' + dateFormat()
+      );
     }
   } catch (err) {
     console.log('日志写入Redis失败', err);
