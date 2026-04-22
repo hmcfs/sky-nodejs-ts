@@ -1,0 +1,11 @@
+Sequelize 全套系统补习大纲
+阶段 1：基础入门 & 单表 CRUD（最简单）
+阶段 2：模型配置详解（underscored、主键、时间戳）
+阶段 3：4 种单表查询方法全对比（findByPk /findOne/findAll /findAndCountAll）
+阶段 4：模型关联关系终极全集
+belongsTo /hasMany/belongsToMany
+（一对一、一对多、多对多，as、foreignKey、targetKey 全部讲死）
+阶段 5：include 多表联查（单层、嵌套、字段过滤）
+阶段 6：复杂修改、级联修改、一对多完整增删改业务
+阶段 7：事务 Transaction（新增 / 修改必用，防止数据脏数据）
+阶段 8：综合实战大题（完整套餐新增、完整套餐修改，完全对标苍穹外卖）
