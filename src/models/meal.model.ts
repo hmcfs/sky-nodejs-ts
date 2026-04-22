@@ -1,7 +1,8 @@
 import type { Meal, MealCreate } from '../types/meal.type';
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../db/sequelize';
-
+import CategoryModel from './category.model';
+import MealDishModel from './mealDish.model';
 import dateFormat from '../utils/dateFormat';
 class MealModel extends Model<Meal, MealCreate> implements Meal {
   id!: number;
@@ -63,4 +64,5 @@ MealModel.init(
     updatedAt: 'updateTime',
   }
 );
+
 export default MealModel;

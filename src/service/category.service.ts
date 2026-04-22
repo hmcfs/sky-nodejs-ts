@@ -103,3 +103,8 @@ export const deleteSev = async (id: number) => {
   return await CategoryModel.destroy({ where: { id } });
 };
 //查询分类的套餐
+export const getMealCategorySev = async (type: number | undefined) => {
+  const where: any = {};
+  if (type !== undefined) where.type = type;
+  return await CategoryModel.findAll({ where });
+};

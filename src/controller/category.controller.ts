@@ -1,5 +1,11 @@
 import { Request, Response } from 'express';
-import { getListSev, addSev, updateSev, deleteSev } from '../service/category.service';
+import {
+  getListSev,
+  addSev,
+  updateSev,
+  deleteSev,
+  getMealCategorySev,
+} from '../service/category.service';
 import type { CategoryPage, CategoryCreate } from '../types/category.type';
 import { getUserId } from '../utils/jwt';
 import type { UpdateParams } from '../types/category.type';
@@ -49,6 +55,16 @@ export const del = async (req: Request, res: Response) => {
     if (!id) res.fail('id不能为空');
     const affectedCount = await deleteSev(Number(id));
     if (affectedCount > 0) res.success({ affectedCount });
+  } catch (e) {
+    res.fail(e);
+  }
+};
+//查询分类的套餐
+export const getMealCategory = async (req: Request, res: Response) => {
+  try {
+    const { type } = req.query;
+    const result = await getMealCategorySev(type ? Number(type) : undefined);
+    res.success(result);
   } catch (e) {
     res.fail(e);
   }
