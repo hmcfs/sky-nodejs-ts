@@ -1,9 +1,6 @@
 import type { Meal, MealCreate } from '../types/meal.type';
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../db/sequelize';
-import CategoryModel from './category.model';
-import MealDishModel from './mealDish.model';
-import dateFormat from '../utils/dateFormat';
 class MealModel extends Model<Meal, MealCreate> implements Meal {
   id!: number;
   categoryId!: number;
@@ -23,36 +20,13 @@ MealModel.init(
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     categoryId: { type: DataTypes.INTEGER, allowNull: false },
     name: { type: DataTypes.STRING(32), allowNull: false },
-    price: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
-      get() {
-        const value = this.getDataValue('price');
-        return value ? Number(value) : -1;
-      },
-    },
+    price: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
     status: { type: DataTypes.INTEGER, allowNull: false },
     description: { type: DataTypes.STRING, allowNull: false },
 
     image: { type: DataTypes.STRING, allowNull: false },
-    createTime: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      get() {
-        const value = this.getDataValue('createTime');
-        return value ? dateFormat(value) : '';
-      },
-    },
-    updateTime: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      get() {
-        const value = this.getDataValue('updateTime');
-        return value ? dateFormat(value) : '';
-      },
-    },
+    createTime: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
+    updateTime: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
     createUser: { type: DataTypes.INTEGER, allowNull: false },
     updateUser: { type: DataTypes.INTEGER, allowNull: false },
   },
@@ -64,5 +38,4 @@ MealModel.init(
     updatedAt: 'updateTime',
   }
 );
-
 export default MealModel;
