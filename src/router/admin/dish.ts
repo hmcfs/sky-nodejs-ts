@@ -7,4 +7,5 @@ router.get('/page', dishCtrl.getList);
 router.get('/:id', dishCtrl.getById);
 router.put('/', dishCtrl.update);
 router.post('/status/:status', dishCtrl.updateStatus);
+router.post('/', dishCtrl.create);
 export default router;

@@ -1,6 +1,6 @@
 import DishModel from '../models/dish.model';
 import CategoryModel from '../models/category.model';
-import { DishAttribute, DishPage, DishUpdate } from '../types/dish.type';
+import { DishAttribute, DishCreateParams, DishPage, DishUpdate } from '../types/dish.type';
 import { Op, Transaction } from 'sequelize';
 import { PageResult } from '../types/global.type';
 import FlavorModel from '../models/flavor.model';
@@ -103,4 +103,23 @@ export const updateStatusSev = async (token: string, id: number, status: number)
   const userId = getUserId(token);
   const [count] = await DishModel.update({ status, updateUser: userId! }, { where: { id } });
   return count > 0;
+};
+//新增
+export const createMealSev = async (token: string, data: DishCreateParams) => {
+  const transaction: Transaction = await sequelize.transaction();
+  try {
+    const userId = getUserId(token);
+    const { flavors, ...rest } = data;
+    rest.createUser = userId!;
+    rest.updateUser = userId!;
+    const result = await DishModel.create(rest, { transaction });
+    const flavorsData = flavors.map(i => ({ ...i, dishId: result.id }));
+    if (flavorsData && flavorsData.length > 0)
+      await FlavorModel.bulkCreate(flavorsData, { transaction });
+    await transaction.commit();
+    return true;
+  } catch (e) {
+    await transaction.rollback();
+    throw e;
+  }
 };

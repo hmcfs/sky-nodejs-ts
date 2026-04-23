@@ -70,3 +70,12 @@ export const updateStatus = async (req: Request, res: Response) => {
     res.fail(e);
   }
 };
+//新增
+export const create = async (req: Request, res: Response) => {
+  try {
+    await dishSev.createMealSev(String(req.headers.token ?? ''), req.body);
+    res.success('添加成功');
+  } catch (e) {
+    res.fail(e);
+  }
+};

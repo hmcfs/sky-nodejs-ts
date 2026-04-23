@@ -43,3 +43,8 @@ export interface DishUpdate {
   categoryId: number;
   categoryName: string;
 }
+
+export interface DishCreateParams extends DishUpdate {
+  createUser: number;
+  createTime: Date;
+}
