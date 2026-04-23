@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { CACHE_KEY_TOKEN, JWT_EXPIRES_IN, JWT_SECRET } from '../constants/index';
+import { CACHE_KEY_TOKEN, JWT_EXPIRES_IN, JWT_SECRET } from '../constants';
 import redisCli from '../db/redis';
 import type { DecodedToken, RedisToken } from '../types/jwt.types';
 //生成token
@@ -40,6 +40,7 @@ export const verifyToken = async (token: string) => {
 };
 
 export function getUserId(token: string) {
+  if (!token || token.length < 0) return null;
   const decode = jwt.verify(token, JWT_SECRET) as DecodedToken;
   const id = Number(decode.userId);
   return isNaN(id) ? null : id;

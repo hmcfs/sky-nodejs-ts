@@ -2,6 +2,8 @@ import MealModel from './meal.model';
 import MealDishModel from './mealDish.model';
 import CategoryModel from './category.model';
 import DishModel from './dish.model';
+import FlavorModel from './flavor.model';
+
 MealModel.belongsTo(CategoryModel, {
   foreignKey: 'categoryId',
   targetKey: 'id',
@@ -28,4 +30,14 @@ DishModel.belongsTo(CategoryModel, {
 CategoryModel.hasMany(DishModel, {
   foreignKey: 'categoryId',
   as: 'dish',
+});
+
+FlavorModel.belongsTo(DishModel, {
+  as: 'dish',
+  foreignKey: 'dishId',
+  targetKey: 'id',
+});
+DishModel.hasMany(FlavorModel, {
+  as: 'flavors',
+  foreignKey: 'dishId',
 });
