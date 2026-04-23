@@ -1,9 +1,10 @@
-import express from 'express';
-
+import 'dotenv/config';
+import express, { NextFunction, Request, Response } from 'express';
+import './models/associations';
 import router from './router/index';
-import { Response, Request, NextFunction } from 'express';
-import { loggerMiddleware } from './middleware/logger';
 import { responseMiddleware } from './middleware/response.middleware';
+import { winstonMiddleware } from './middleware/winston';
+
 const port = 8080;
 const app = express();
 app.use(express.json());
@@ -12,7 +13,7 @@ app.get('/t', (req, res) => {
   res.send('hello world');
 });
 
-app.use(loggerMiddleware);
+app.use(winstonMiddleware);
 app.use(responseMiddleware);
 app.use(router);
 app.use((req: Request, res: Response, next: NextFunction) => res.status(404).send('Not Found'));

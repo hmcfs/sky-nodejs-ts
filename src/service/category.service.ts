@@ -2,11 +2,11 @@ import { QueryTypes } from 'sequelize';
 import sequelize from '../db/sequelize';
 import CategoryModel from '../models/category.model';
 import type {
+  CategoryCreate,
   CategoryPage,
   QueryResult,
   QueryResult2,
   UpdateParams,
-  CategoryCreate,
 } from '../types/category.type';
 import type { PageResult } from '../types/global.type';
 import dateFormat from '../utils/dateFormat';
@@ -21,24 +21,48 @@ export const getListSev = async (data: CategoryPage) => {
   let params2: (string | number)[];
   const name2 = name?.trim();
   if (name2 && categoryType !== undefined) {
-    sql = `select * from category where name like ? and type = ? order by sort asc limit ? offset ? `;
+    sql = `select *
+           from category
+           where name like ?
+             and type = ?
+           order by sort asc limit ?
+           offset ? `;
     params = [`%${name2}%`, categoryType, pageSize, offset];
-    sql2 = `select count(*) as total from category where name like ? and type = ?`;
+    sql2 = `select count(*) as total
+            from category
+            where name like ?
+              and type = ?`;
     params2 = [`%${name2}%`, categoryType];
   } else if (name2) {
-    sql = `select * from category where name like ? order by sort asc limit ? offset ?`;
+    sql = `select *
+           from category
+           where name like ?
+           order by sort asc limit ?
+           offset ?`;
     params = [`%${name2}%`, pageSize, offset];
-    sql2 = `select count(*) as total from category where name like ?`;
+    sql2 = `select count(*) as total
+            from category
+            where name like ?`;
     params2 = [`%${name2}%`];
   } else if (categoryType !== undefined) {
-    sql = `select * from category where type = ? order by sort asc limit ? offset ?`;
+    sql = `select *
+           from category
+           where type = ?
+           order by sort asc limit ?
+           offset ?`;
     params = [categoryType, pageSize, offset];
-    sql2 = `select count(*) as total from category where type = ?`;
+    sql2 = `select count(*) as total
+            from category
+            where type = ?`;
     params2 = [categoryType];
   } else {
-    sql = `select * from category order by sort asc limit ? offset ?`;
+    sql = `select *
+           from category
+           order by sort asc limit ?
+           offset ?`;
     params = [pageSize, offset];
-    sql2 = `select count(*) as total from category`;
+    sql2 = `select count(*) as total
+            from category`;
     params2 = [];
   }
 
@@ -101,4 +125,19 @@ export const addSev = async (token: string, data: CategoryCreate) => {
 export const deleteSev = async (id: number) => {
   id = Number(id);
   return await CategoryModel.destroy({ where: { id } });
+};
+export const getMealCategorySev = async (type: number | undefined) => {
+  const sql = `select *
+               from category
+               where type = ?`;
+  const records = await sequelize.query<QueryResult>(sql, {
+    replacements: [type],
+    type: QueryTypes.SELECT,
+  });
+  return (
+    records?.map(i => {
+      const { create_time, update_time, ...res } = i;
+      return { ...res, createTime: dateFormat(create_time), updateTime: dateFormat(update_time) };
+    }) || []
+  );
 };

@@ -1,6 +1,11 @@
 import { Router } from 'express';
-import { getList } from '../../controller/meal.controller';
-const router = Router();
-router.get('/', getList);
+import * as meal from '../../controller/meal.controller';
 
+const router = Router();
+
+router.get('/page', meal.getList);
+router.get('/:id', meal.getById);
+router.post('/', meal.createMeal);
+router.put('/', meal.update);
+router.post('/status/:status', meal.updateStatus);
 export default router;
