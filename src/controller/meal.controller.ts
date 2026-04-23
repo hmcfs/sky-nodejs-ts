@@ -1,5 +1,6 @@
 import {
   createMealSev,
+  deleteMealSev,
   getByIdSev,
   getListSev,
   updateSev,
@@ -65,6 +66,23 @@ export const createMeal = async (req: Request, res: Response) => {
     const result = await createMealSev(String(req.headers.token || ''), req.body);
     if (result) res.success('添加成功');
     else res.fail('添加失败');
+  } catch (e) {
+    res.fail(e);
+  }
+};
+//删除套餐和菜品+批量删除
+export const delMeal = async (req: Request, res: Response) => {
+  try {
+    const idsStr = String(req.query.ids || '');
+    let ids: number[] = [];
+    if (idsStr)
+      ids = idsStr
+        .split(',')
+        .map(i => Number(i.trim()))
+        .filter(i => !isNaN(i));
+    const result = await deleteMealSev(ids);
+    if (result) res.success();
+    else res.fail('删除失败');
   } catch (e) {
     res.fail(e);
   }

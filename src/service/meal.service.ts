@@ -69,7 +69,7 @@ export const updateSev = async (data: MealUpdate) => {
   try {
     const { id, setmealDishes, ...rest } = data;
     rest.price = Number(rest.price) || -1;
-    const updateRes = await MealModel.update(rest, { where: { id: data.id }, transaction: t });
+    const [count] = await MealModel.update(rest, { where: { id: data.id }, transaction: t });
     await MealDishModel.destroy({ where: { setmealId: data.id }, transaction: t });
     if (setmealDishes && setmealDishes.length > 0) {
       const insert = setmealDishes.map(i => {
@@ -80,7 +80,7 @@ export const updateSev = async (data: MealUpdate) => {
     }
 
     await t.commit();
-    return true;
+    return count;
   } catch (error) {
     await t.rollback();
     throw error;
@@ -111,6 +111,19 @@ export const createMealSev = async (token: string, data: MealUpdate) => {
     return result;
   } catch (e) {
     await transaction.rollback();
+    throw e;
+  }
+};
+//删除套餐 +批量删除
+export const deleteMealSev = async (ids: number[]) => {
+  const transaction: Transaction = await sequelize.transaction();
+  try {
+    const delCount = await MealModel.destroy({ where: { id: ids }, transaction });
+    await MealDishModel.destroy({ where: { setmealId: ids }, transaction });
+    transaction.commit();
+    return delCount;
+  } catch (e) {
+    transaction.rollback();
     throw e;
   }
 };

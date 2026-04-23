@@ -8,4 +8,5 @@ router.get('/:id', meal.getById);
 router.post('/', meal.createMeal);
 router.put('/', meal.update);
 router.post('/status/:status', meal.updateStatus);
+router.delete('/', meal.delMeal);
 export default router;
