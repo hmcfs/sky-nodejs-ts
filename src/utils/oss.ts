@@ -3,7 +3,7 @@ import config from '../config/index';
 import path from 'path';
 
 const ossClient = new OSS(config.ossConfig);
-console.log('ossClient:', config.ossConfig);
+/*console.log('ossClient:', config.ossConfig);*/
 export const uploadToOss = async (fileBuffer: Buffer, originalname: string) => {
   const ext = path.extname(originalname);
   const fileName = `meal-images/${Date.now()}${ext}`;

@@ -4,6 +4,7 @@ import employeeRouter from './employee';
 import categoryRouter from './category';
 import mealRouter from './meal';
 import dishRouter from './dish';
+import orderRouter from './order';
 import { authMiddleware } from '../../middleware/auth.middleware';
 
 const adminRouter = Router();
@@ -13,4 +14,5 @@ adminRouter.use(employeeRouter);
 adminRouter.use('/category', categoryRouter);
 adminRouter.use('/setmeal', mealRouter);
 adminRouter.use('/dish', dishRouter);
+adminRouter.use('/order', orderRouter);
 export default adminRouter;
