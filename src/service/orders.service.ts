@@ -1,5 +1,6 @@
 import OrdersModel from '../models/orders.model';
 import { Op } from 'sequelize';
+import OrderDetailModel from '../models/orderDetail.model';
 
 interface SearchData1 {
   beginTime: string;
@@ -28,9 +29,23 @@ export const searchSev = async (data: SearchData) => {
     where,
     limit: pageSize,
     offset,
+    include: [
+      {
+        model: OrderDetailModel,
+        as: 'orderDetails',
+        attributes: ['name'],
+      },
+    ],
   });
+  /* orderDishes:"牛肉盖浇饭*1;"*/
+  return {
+    records: rows.map(i => {
+      const { orderDetails, ...rest } = i.toJSON();
 
-  return { records: rows, total: count };
+      return { ...rest, orderDishes: orderDetails?.[0]?.name ?? '香辣鸡腿堡' };
+    }),
+    total: count,
+  };
 };
 export const statisticsSev = async () => {
   const toBeConfirmed = await OrdersModel.count({ where: { status: 2 } });
@@ -41,4 +56,16 @@ export const statisticsSev = async () => {
     confirmed,
     deliveryInProgress,
   };
+};
+//detail
+export const detailByIdSev = async (id: number) => {
+  return await OrdersModel.findOne({
+    where: { id },
+    include: [
+      {
+        model: OrderDetailModel,
+        as: 'orderDetails',
+      },
+    ],
+  });
 };

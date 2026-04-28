@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { searchSev, statisticsSev } from '../service/orders.service';
+import { detailByIdSev, searchSev, statisticsSev } from '../service/orders.service';
 
 export const search = async (req: Request, res: Response) => {
   try {
@@ -16,6 +16,17 @@ export const search = async (req: Request, res: Response) => {
     };
     const result = await searchSev(data);
     console.log('result', result);
+    res.success(result);
+  } catch (e) {
+    res.fail(e);
+  }
+};
+//detail
+export const orderDetail = async (req: Request, res: Response) => {
+  try {
+    const id = Number(req.params.id);
+    const result = await detailByIdSev(id);
+    if (!id || !result) return res.fail('不存在');
     res.success(result);
   } catch (e) {
     res.fail(e);

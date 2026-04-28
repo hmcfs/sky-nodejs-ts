@@ -1,3 +1,5 @@
+import { OrderDetailAttribute } from './orderDetail.type';
+
 export interface OrdersAttribute {
   id: number;
   number: string;
@@ -23,6 +25,8 @@ export interface OrdersAttribute {
   packAmount: number;
   tablewareNumber: number;
   tablewareStatus: number;
+  orderDetails?: OrderDetailAttribute[];
+  orderDeshes?: string;
 }
 
 export interface OrdersCreate extends Omit<

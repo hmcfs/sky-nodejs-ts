@@ -156,7 +156,8 @@ OrdersModel.init(
       defaultValue: 0,
       comment: '打包费',
       get() {
-        return Number(this.getDataValue('packAmount')) || -1;
+        const val = Number(this.getDataValue('packAmount'));
+        return isNaN(val) ? 0 : val;
       },
     },
     tablewareNumber: {
