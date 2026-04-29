@@ -5,7 +5,7 @@ import router from './router/index';
 import { responseMiddleware } from './middleware/response.middleware';
 import { winstonMiddleware } from './middleware/winston';
 
-const port = 8080;
+const port = 8081;
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
