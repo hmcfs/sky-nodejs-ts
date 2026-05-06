@@ -26,14 +26,15 @@ const consoleFormat = winston.format.combine(
   winston.format.printf(({ timestamp, level, message }) => {
     // 颜色代码
     const reset = '\x1B[0m';
-    const gray = '\x1B[90m'; // 灰色（时间）
+    //const gray = '\x1B[90m'; // 灰色（时间）
     const red = '\x1B[31m'; // 红色（error）
     const green = '\x1B[32m'; // 绿色（info）
     const yellow = '\x1B[33m'; // 黄色（warn）
     const blue = '\x1B[34m'; // 蓝色（sql）
 
-    // 时间永远灰色
-    const timeStr = `${gray}[${timestamp}]${reset}`;
+    // 时间
+    const timeStr = `[${timestamp}]`;
+    /*const timeStr = `${gray}[${timestamp}]${reset}`;*/
 
     // 根据级别渲染颜色
     if (level === 'error') {

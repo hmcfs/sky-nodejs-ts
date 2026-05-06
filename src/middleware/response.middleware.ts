@@ -1,4 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
+import logger from '../utils/logger';
+import { CACHE_KEY_LOG } from '../constants';
+import redisClient from '../db/redis';
 
 declare global {
   namespace Express {
@@ -10,7 +13,7 @@ declare global {
   }
 }
 
-export function responseMiddleware(req: Request, res: Response, next: NextFunction) {
+export async function responseMiddleware(req: Request, res: Response, next: NextFunction) {
   res.success = (data: any = null, msg = 'success', code = 1) => {
     res.json({
       code,
@@ -18,7 +21,7 @@ export function responseMiddleware(req: Request, res: Response, next: NextFuncti
       data,
     });
   };
-  res.fail = (err: any, code = 0) => {
+  res.fail = async (err: any, code = 0) => {
     let msg = '服务器错误';
 
     // 1.  Sequelize 字段校验错误（格式不对、非空）
@@ -40,7 +43,19 @@ export function responseMiddleware(req: Request, res: Response, next: NextFuncti
       msg = err;
     }
 
-    console.error('响应失败：', msg);
+    logger.error(`[接口错误] ${msg}`, { err });
+    try {
+      const errorLog = {
+        time: new Date().toLocaleString(),
+        url: req.originalUrl,
+        ip: req.ip || 'unknown',
+        msg,
+        err: err.message || 'unknown error',
+      };
+      await redisClient.lPush(CACHE_KEY_LOG + ':errors', JSON.stringify(errorLog));
+      await redisClient.lTrim(CACHE_KEY_LOG + ':errors', 0, 999);
+      await redisClient.expire(CACHE_KEY_LOG + ':errors', 60 * 60 * 24 * 7);
+    } catch (e) {}
     res.json({ code, msg, data: null });
   };
   next();

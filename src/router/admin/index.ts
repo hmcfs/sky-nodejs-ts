@@ -6,6 +6,7 @@ import mealRouter from './meal';
 import dishRouter from './dish';
 import orderRouter from './order';
 import reportRouter from './report';
+import workspaceRouter from './workspace';
 import { authMiddleware } from '../../middleware/auth.middleware';
 
 const adminRouter = Router();
@@ -17,4 +18,5 @@ adminRouter.use('/setmeal', mealRouter);
 adminRouter.use('/dish', dishRouter);
 adminRouter.use('/order', orderRouter);
 adminRouter.use('/report', reportRouter);
+adminRouter.use('/workspace', workspaceRouter);
 export default adminRouter;

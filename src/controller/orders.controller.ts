@@ -15,7 +15,6 @@ export const search = async (req: Request, res: Response) => {
       useId: useId ? Number(useId) : undefined,
     };
     const result = await searchSev(data);
-    console.log('result', result);
     res.success(result);
   } catch (e) {
     res.fail(e);
