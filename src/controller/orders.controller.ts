@@ -1,5 +1,11 @@
 import { Request, Response } from 'express';
-import { detailByIdSev, searchSev, statisticsSev } from '../service/orders.service';
+import {
+  confirmOrderSev,
+  detailByIdSev,
+  rejectOrderSev,
+  searchSev,
+  statisticsSev,
+} from '../service/orders.service';
 
 export const search = async (req: Request, res: Response) => {
   try {
@@ -34,6 +40,30 @@ export const orderDetail = async (req: Request, res: Response) => {
 export const statistics = async (req: Request, res: Response) => {
   try {
     res.success(await statisticsSev());
+  } catch (e) {
+    res.fail(e);
+  }
+};
+export const confirmOrder = async (req: Request, res: Response) => {
+  try {
+    const id = Number(req.body.id);
+
+    if (isNaN(id)) throw '参数错误';
+    const result = await confirmOrderSev(id);
+    if (!result) return res.fail('修改失败');
+    res.success();
+  } catch (e) {
+    res.fail(e);
+  }
+};
+export const rejectOrder = async (req: Request, res: Response) => {
+  try {
+    const id = Number(req.body.id);
+    const rejectionReason = String(req.body.rejectionReason);
+    if (isNaN(id) || !rejectionReason) throw '参数错误';
+    const result = await rejectOrderSev({ id, rejectionReason });
+    if (!result) return res.fail('修改失败');
+    res.success();
   } catch (e) {
     res.fail(e);
   }

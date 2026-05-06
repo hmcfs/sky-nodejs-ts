@@ -69,3 +69,26 @@ export const detailByIdSev = async (id: number) => {
     ],
   });
 };
+export const confirmOrderSev = async (id: number) => {
+  const [affected] = await OrdersModel.update(
+    {
+      status: 3,
+    },
+    {
+      where: { id },
+    }
+  );
+  return affected > 0;
+};
+export const rejectOrderSev = async (data: { id: number; rejectionReason: string }) => {
+  const [affected] = await OrdersModel.update(
+    {
+      status: 6,
+      rejectionReason: data.rejectionReason,
+    },
+    {
+      where: { id: data.id },
+    }
+  );
+  return affected > 0;
+};
