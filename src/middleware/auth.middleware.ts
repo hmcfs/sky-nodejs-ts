@@ -11,3 +11,15 @@ export async function authMiddleware(req: Request, res: Response, next: NextFunc
     });
   next();
 }
+
+export async function userAuthMiddleware(req: Request, res: Response, next: NextFunction) {
+  console.log('userAuthMiddleware');
+  const token = String(req.headers.authentication || '');
+  if (!token) return res.fail('请登录');
+  if (!(await verifyToken(token)))
+    return res.status(401).json({
+      code: 0,
+      msg: '登录过期',
+    });
+  next();
+}

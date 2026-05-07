@@ -1,7 +1,9 @@
 import jwt from 'jsonwebtoken';
-import { CACHE_KEY_TOKEN, JWT_EXPIRES_IN, JWT_SECRET } from '../constants';
+import { CACHE_KEY_TOKEN, JWT_EXPIRES_IN } from '../constants';
 import redisCli from '../db/redis';
 import type { DecodedToken, RedisToken } from '../types/jwt.types';
+
+const JWT_SECRET = process.env.JWT_SECRET as string;
 //生成token
 export const generateToken = async (userId: number | string) => {
   try {

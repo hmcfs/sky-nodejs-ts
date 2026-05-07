@@ -127,13 +127,23 @@ export const deleteSev = async (id: number) => {
   return await CategoryModel.destroy({ where: { id } });
 };
 export const getMealCategorySev = async (type: number | undefined) => {
-  const sql = `select *
-               from category
-               where type = ?`;
-  const records = await sequelize.query<QueryResult>(sql, {
-    replacements: [type],
-    type: QueryTypes.SELECT,
-  });
+  let records: QueryResult[] | null;
+  if (type) {
+    const sql = `select *
+                 from category
+                 where type = ?`;
+    records = await sequelize.query<QueryResult>(sql, {
+      replacements: [type],
+      type: QueryTypes.SELECT,
+    });
+  } else {
+    const sql = `select *
+                 from category`;
+    records = await sequelize.query<QueryResult>(sql, {
+      type: QueryTypes.SELECT,
+    });
+  }
+  console.log('123');
   return (
     records?.map(i => {
       const { create_time, update_time, ...res } = i;
