@@ -44,6 +44,5 @@ export const verifyToken = async (token: string) => {
 export function getUserId(token: string) {
   if (!token || token.length < 0) return null;
   const decode = jwt.verify(token, JWT_SECRET) as DecodedToken;
-  const id = Number(decode.userId);
-  return isNaN(id) ? null : id;
+  return decode.userId;
 }

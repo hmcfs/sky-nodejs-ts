@@ -96,7 +96,7 @@ export const updateStatusSev = async (id: number, status: number) => {
 export const createMealSev = async (token: string, data: MealUpdate) => {
   const transaction: Transaction = await sequelize.transaction();
   try {
-    const userId = getUserId(token);
+    const userId = Number(getUserId(token));
     data.createUser = userId!;
     data.updateUser = userId!;
     const { setmealDishes, ...rest } = data;

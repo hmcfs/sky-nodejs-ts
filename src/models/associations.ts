@@ -52,3 +52,8 @@ OrderDetailModel.belongsTo(OrdersModel, {
   foreignKey: 'orderId',
   targetKey: 'id',
 });
+
+DishModel.hasMany(MealDishModel, {
+  as: 'mealDishes',
+  foreignKey: 'dishId',
+});

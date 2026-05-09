@@ -79,7 +79,7 @@ export const getByIdSev = async (id: number) => {
 export const updateSev = async (token: string, data: DishUpdate) => {
   const transaction: Transaction = await sequelize.transaction();
   try {
-    const userId = getUserId(token);
+    const userId = Number(getUserId(token));
     data.updateUser = userId!;
     const { flavors, ...rest } = data;
     const flavors2 = flavors.map(i => {
@@ -101,14 +101,17 @@ export const updateSev = async (token: string, data: DishUpdate) => {
 //起售/停售
 export const updateStatusSev = async (token: string, id: number, status: number) => {
   const userId = getUserId(token);
-  const [count] = await DishModel.update({ status, updateUser: userId! }, { where: { id } });
+  const [count] = await DishModel.update(
+    { status, updateUser: Number(userId)! },
+    { where: { id } }
+  );
   return count > 0;
 };
 //新增
 export const createMealSev = async (token: string, data: DishCreateParams) => {
   const transaction: Transaction = await sequelize.transaction();
   try {
-    const userId = getUserId(token);
+    const userId = Number(getUserId(token));
     const { flavors, ...rest } = data;
     rest.createUser = userId!;
     rest.updateUser = userId!;
