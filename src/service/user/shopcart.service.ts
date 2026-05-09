@@ -121,3 +121,16 @@ export const subtractCartSev = async (data: CartParams) => {
     throw e;
   }
 };
+export const clearCartSev = async (token: string) => {
+  const transaction: Transaction = await sequelize.transaction();
+  try {
+    const openid = getUserId(token);
+    const userId = (await UserModel.findOne({ where: { openid: openid! }, transaction }))!.id;
+    const result = await ShopcartModel.destroy({ where: { userId }, transaction });
+    await transaction.commit();
+    return result;
+  } catch (e) {
+    await transaction.rollback();
+    throw e;
+  }
+};

@@ -1,5 +1,10 @@
 import { Request, Response } from 'express';
-import { addCartSev, getCartlistSev, subtractCartSev } from '../../service/user/shopcart.service';
+import {
+  addCartSev,
+  clearCartSev,
+  getCartlistSev,
+  subtractCartSev,
+} from '../../service/user/shopcart.service';
 
 export const addCart = async (req: Request, res: Response) => {
   try {
@@ -30,6 +35,15 @@ export const subtractCart = async (req: Request, res: Response) => {
     });
     if (result) res.success(result);
     else res.fail('删除失败');
+  } catch (e) {
+    res.fail(e);
+  }
+};
+export const clearCart = async (req: Request, res: Response) => {
+  try {
+    const result = await clearCartSev(String(req.headers.authentication!));
+    if (result) res.success(result);
+    else res.fail('清空失败');
   } catch (e) {
     res.fail(e);
   }
