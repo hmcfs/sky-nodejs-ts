@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import { CACHE_KEY_TOKEN, JWT_EXPIRES_IN } from '../constants';
 import redisCli from '../db/redis';
 import type { DecodedToken, RedisToken } from '../types/jwt.types';
+import UserModel from '../models/user/user.model';
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 //生成token
@@ -45,4 +46,10 @@ export function getUserId(token: string) {
   if (!token || token.length < 0) return null;
   const decode = jwt.verify(token, JWT_SECRET) as DecodedToken;
   return decode.userId;
+}
+
+export async function getWxUserId(token: string) {
+  if (!token || token.length < 0) return null;
+  const decode = jwt.verify(token, JWT_SECRET) as DecodedToken;
+  return await UserModel.findOne({ where: { openid: decode.userId } });
 }

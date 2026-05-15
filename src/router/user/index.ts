@@ -5,6 +5,8 @@ import categoryRouter from './category';
 import mealRouter from './meal';
 import dishRouter from './dish';
 import cartRouter from './shopcart';
+import orderRouter from './order';
+import addressRouter from './address';
 
 const router = Router();
 router.use(loginRouter);
@@ -13,4 +15,6 @@ router.use('/category', categoryRouter);
 router.use('/setmeal', mealRouter);
 router.use('/dish', dishRouter);
 router.use('/shoppingCart', cartRouter);
+router.use('/order', orderRouter);
+router.use('/addressBook', addressRouter);
 export default router;

@@ -48,8 +48,11 @@ ShopcartModel.init(
       defaultValue: 1,
     },
     amount: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
+      get() {
+        return Number(this.getDataValue('amount'));
+      },
     },
     createTime: {
       type: DataTypes.DATE,

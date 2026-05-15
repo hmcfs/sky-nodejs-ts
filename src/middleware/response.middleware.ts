@@ -14,6 +14,16 @@ declare global {
 }
 
 export async function responseMiddleware(req: Request, res: Response, next: NextFunction) {
+  // 跨域配置
+  console.log(req.headers.origin);
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization,token,authentication');
+
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+
   res.success = (data: any = null, msg = 'success', code = 1) => {
     res.json({
       code,
@@ -43,7 +53,7 @@ export async function responseMiddleware(req: Request, res: Response, next: Next
       msg = err;
     }
 
-    logger.error(`[接口错误] ${msg}`, { err });
+    logger.error(` ${req.method} ${req.originalUrl} error:${msg}`, { err });
     try {
       const errorLog = {
         time: new Date().toLocaleString(),
